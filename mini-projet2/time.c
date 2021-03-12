@@ -5,7 +5,7 @@
 
 #include "entreeSortieLC.h"
 #include "entreeSortieH.h"
-int main(){
+int main(int argc,char** argv){
   /*Création de deux bibliothèque*/
   Biblio* b1=creer_biblio();
   BiblioH* b2=creer_biblio_H(5);
@@ -40,6 +40,7 @@ int main(){
   clock_t  temps_final2;
   double temps_cpu;
   double temps_cpu2;
+  printf("----------------------execrice 3 question 1-------------------------\n");
   for(i=0;i<10;i++){
     temps_initial = clock();
     recherche_ouvrage_numero(1,b1);
@@ -104,6 +105,7 @@ int main(){
     printf("\n\n");
 
     }
+    printf("----------------------execrice 3 question 2-------------------------\n");
 
     printf("taille modifié\n");
     for(i=5;i<11;i++){
@@ -149,6 +151,30 @@ int main(){
 
       b2=b3;
       }
+      liberer_biblio_H(b2);
+      printf("----------------------execrice 3 question 3-------------------------\n");
+      FILE *f=fopen("Resultatstemps.txt","w");
+      printf("taille\tliste_t table de hachage\n");
+      for(i=1000;i<=30000;i=i+1000){
+        if(!argv[1])argv[1]="GdeBiblio.txt";
+        b1=charger_n_entrees(argv[1],i);
+        b2=charger_n_entrees_H(argv[1],i);
+        temps_initial = clock();
+        recherche_livres_auteur("auteur7",b1);
+        temps_final = clock();
+        temps_cpu =   (( double)(temps_final  - temps_initial));
 
+        temps_initial2 = clock();
+        recherche_auteur_H("auteur7",b2);
+        temps_final2 = clock();
+        temps_cpu2 =   (( double)(temps_final2  - temps_initial2));
+        printf("%d\t%f\t%f\n",i,temps_cpu,temps_cpu2);
+        fprintf(f,"%d\t%f\t%f\n",i,temps_cpu,temps_cpu2);
+        i=i+100;
+        liberer_biblio(b1);
+        liberer_biblio_H(b2);
+      }
+      fclose(f);
+      return 0;
 
 }
